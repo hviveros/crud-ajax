@@ -25,34 +25,11 @@
 				</div>
 			</div>
 			<hr>
-			<table class="table table-bordered" id="tablaCliente">
-				<thead class="thead-dark">
-					<tr>
-						<th scope="col">#id</th>
-						<th scope="col">nombre</th>
-						<th scope="col">e-mail</th>
-						<th scope="col">acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-						if (!empty($clientes)) {
-							foreach ($clientes as $r) { 
-					?>
-					<tr>
-						<th scope="row"><?=$r['id'];?></th>
-						<td><?=$r['nombre'];?></td>
-						<td><?=$r['email'];?></td>
-						<td>
-							<a href="?page=editar&id=<?= $r['id']; ?>" type="a" class="btn btn-info">Editar</a>
-							<a href="?page=eliminar&id=<?= $r['id']; ?>" type="a" class="btn btn-danger">Eliminar</a>
-						</td>
-					</tr>
-					<?php } } ?>
-				</tbody>
-			</table>
+			
+			<div id="tablaCliente"></div>
+
 			<div class="text-left">
-				<button class="btn btn-primary text-left" data-toggle="modal" data-target="#insertarRegistroModal">Insertar registro</button>				
+				<button class="btn btn-primary text-left" data-toggle="modal" data-target="#insertarRegistroModal">Insertar</button>
 			</div>
 		</div>
 
@@ -60,16 +37,16 @@
 
 
 <!-- Modal Agregar -->
-<div class="modal fade" id="insertarRegistroModal" tabindex="-1" role="dialog" aria-labelledby="agregarDatosModalLabel" aria-hidden="true">
+<div class="modal fade" id="insertarRegistroModal" tabindex="-1" role="dialog" aria-labelledby="insetarRegistroModal" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="agregarDatosModalLabel">Insertar nuevos registros</h5>
+				<h5 class="modal-title" id="insetarRegistroModal">Insertar nuevos registros</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="index.php?page=insertar" method="POST" name="registroForm" id="registroForm" class="text-left">
+			<form method="POST" name="registroForm" id="registroForm" class="text-left">
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="nombre">Nombre</label>
@@ -93,29 +70,28 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('#tablaCliente').load();
-	})
-
-
-	$(document).ready(function(){
 		$('#btnInsertar').click(function(){
 			datos=$('#registroForm').serialize();
 
 			$.ajax({
 				type: "POST",
 				data: datos,
-				url:  "insertar.php",
+				//prestar atención a "url"
+				url:  "index.php?page=insertar",
 				success: function(r){
+					$('#registroForm')[0].reset();
+					$('#tablaCliente').load();
+					alert("Agregado Ok!");
 					// if (r==1) {
-					// 	$('#registroForm')[0].reset();
-					// 	$('#tablaCliente').load();
-					// 	alert ("Agregado Ok!");
 					// } else {
-					// 	alert("Fallo al agregar");
+					// 	alert(r);
 					// }
-					alert(r);
 				}
 			});
+
 		});
+		
+		$('#tablaCliente').load('tabla.php');
+
 	});
 </script>
