@@ -46,8 +46,8 @@
 							<td><?=$r['nombre'];?></td>
 							<td><?=$r['email'];?></td>
 							<td>
-								<button class="btn btn-info" data-toggle="modal" data-target="#editarRegistroModal" onclick="cargarFormEditar(<?= $r['id']; ?>)">Editar</button>
-								<button href="?page=eliminar&id=<?= $r['id']; ?>" class="btn btn-danger">Eliminar</button>
+								<button data-toggle="modal" data-target="#editarRegistroModal" onclick="cargarFormEditar(<?= $r['id']; ?>)" class="btn btn-info">Editar</button>
+								<button data-toggle="modal" data-target="#eliminarRegistroModal" onclick="cargarFormEliminar(<?= $r['id']; ?>)" class="btn btn-danger">Eliminar</button>
 							</td>
 						</tr>
 						<?php } } ?>
@@ -129,6 +129,33 @@
 	</div>
 </div>
 
+<!-- Modal Eliminar -->
+<div class="modal fade" id="eliminarRegistroModal" tabindex="-1" role="dialog" aria-labelledby="eliminarRegistroModal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="eliminarRegistroModal">Eliminar registro</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="EliminarForm" class="text-left">
+				<div class="modal-body">
+					<input type="hidden" id="id" name="id">
+					<div class="form-group">
+						<label for="nombreD">Nombre</label>
+						<input type="text" id="nombreD" name="nombreD" class="form-control" aria-describedby="nombreHelp" disabled>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					<button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#btnInsertar').click(function(){
@@ -171,6 +198,23 @@
 				}
 			});
 		});
+
+		$('#btnEliminar').click(function(){
+			$.ajax({
+				type: "POST",
+				data: "id=" + id,
+				url:  "index.php?page=eliminar",
+				success: function(r){
+					console.log(id);
+					$('#tablaCliente').load(' #tablaCliente');
+					// if (r==1) {
+					// 	alert("eliminado Ok!");
+					// } else {
+					// 	alert("Fallo al eliminar");
+					// }
+				}
+			});
+		});
 		
 		$('#tablaCliente').load(' #tablaCliente');
 
@@ -190,6 +234,26 @@
 				$('#id').val(datos['id']);
 				$('#nombreU').val(datos['nombre']);
 				$('#emailU').val(datos['email']);
+				//} else {
+				//alert("Fallo al editar");
+				//}
+			}
+		});
+	}
+
+	function cargarFormEliminar(id){
+		//alert(id);
+		$.ajax({
+			method: "POST",
+			data: "id=" + id,
+			url: "views/paginas/cargar.php",
+			success: function(r){
+				//console.log(r);
+				//if (r==1) {
+				//alert("Funciona hasta aqui");
+				datos=jQuery.parseJSON(r);
+				$('#id').val(datos['id']);
+				$('#nombreD').val(datos['nombre']);
 				//} else {
 				//alert("Fallo al editar");
 				//}
