@@ -139,9 +139,9 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form id="EliminarForm" class="text-left">
+			<form id="eliminarForm" class="text-left">
 				<div class="modal-body">
-					<input type="hidden" id="id" name="id">
+					<input type="hidden" id="idD" name="idD">
 					<div class="form-group">
 						<label for="nombreD">Nombre</label>
 						<input type="text" id="nombreD" name="nombreD" class="form-control" aria-describedby="nombreHelp" disabled>
@@ -149,7 +149,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					<button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
+					<button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
 				</div>
 			</form>
 		</div>
@@ -200,18 +200,16 @@
 		});
 
 		$('#btnEliminar').click(function(){
+
+			datos=$('#eliminarForm').serialize();
+
 			$.ajax({
 				type: "POST",
-				data: "id=" + id,
+				data: datos,
 				url:  "index.php?page=eliminar",
 				success: function(r){
-					console.log(id);
+					//console.log(datos);
 					$('#tablaCliente').load(' #tablaCliente');
-					// if (r==1) {
-					// 	alert("eliminado Ok!");
-					// } else {
-					// 	alert("Fallo al eliminar");
-					// }
 				}
 			});
 		});
@@ -252,7 +250,7 @@
 				//if (r==1) {
 				//alert("Funciona hasta aqui");
 				datos=jQuery.parseJSON(r);
-				$('#id').val(datos['id']);
+				$('#idD').val(datos['id']);
 				$('#nombreD').val(datos['nombre']);
 				//} else {
 				//alert("Fallo al editar");
