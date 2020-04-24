@@ -1,32 +1,19 @@
 <?php
 
-	class conectar {
-		public function conexion(){
-			$conexion = mysqli_connect('localhost', 'root', '', 'crudajax');
-			$conexion->set_charset('utf8');
-			return $conexion;
-		}
-	}
+	require_once 'controllers/ClienteController.php';
+    $objeto = new ClienteController();
 
-	class crud{
-		public function obtenDatos($id){
-			$obj = new conectar();
-			$conexion = $obj->conexion();
-			$sql = "SELECT id, nombre, email FROM cliente WHERE id = $id";
-			$result = mysqli_query($conexion, $sql);
-			$ver = mysqli_fetch_row($result);
-			$datos = array(
-				'id'		=> $ver[0],
-				'nombre'	=> $ver[1],
-				'email'		=> $ver[2]
-			);
-			return $datos;
-		}
-	}
-    
-	$obj2 = new crud();
+    $id = $_POST['id'];
+    $cliente = $objeto->obtenerCliente($id);
 
-	echo json_encode($obj2->obtenDatos($_POST['id']));
+    foreach ($cliente as $r) {
+	    $datos = array(
+	    	'id' 	=> $r['id'],
+	    	'nombre'=> $r['nombre'],
+	    	'email' => $r['email']
+	    );
+    }
 
+	echo json_encode($datos);
 ?>
 	

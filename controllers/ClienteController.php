@@ -12,6 +12,10 @@ class ClienteController {
         require_once('./views/includes/pie.php');
 	}
 
+	public function cargar() {
+        require_once('./views/paginas/cargar.php');
+	}
+
 	public function insertar() {
         require_once('./views/includes/cabecera.php');
         require_once('./views/includes/navbar.php');
@@ -64,7 +68,5 @@ class ClienteController {
 		$cliente = new ClienteModel();
 		return $cliente->obtenerCliente($id);
 	}
-
-
 
 }

@@ -26,6 +26,7 @@
 			</div>
 			<hr>
 			
+			<!-- tabla de registros -->
 			<div id="tablaCliente">
 				<table class="table table-bordered">
 					<thead class="thead-dark">
@@ -46,8 +47,8 @@
 							<td><?=$r['nombre'];?></td>
 							<td><?=$r['email'];?></td>
 							<td>
-								<button data-toggle="modal" data-target="#editarRegistroModal" onclick="cargarFormEditar(<?= $r['id']; ?>)" class="btn btn-info">Editar</button>
-								<button data-toggle="modal" data-target="#eliminarRegistroModal" onclick="cargarFormEliminar(<?= $r['id']; ?>)" class="btn btn-danger">Eliminar</button>
+								<button data-toggle="modal" data-target="#editarRegistroModal" onclick="cargarFormUpdate(<?= $r['id']; ?>)" class="btn btn-info">Editar</button>
+								<button data-toggle="modal" data-target="#eliminarRegistroModal" onclick="cargarFormDelete(<?= $r['id']; ?>)" class="btn btn-danger">Eliminar</button>
 							</td>
 						</tr>
 						<?php } } ?>
@@ -108,7 +109,7 @@
 			</div>
 			<form id="editarForm" class="text-left">
 				<div class="modal-body">
-					<input type="hidden" id="id" name="id">
+					<input type="hidden" id="idU" name="idU">
 					<div class="form-group">
 						<label for="nombreU">Nombre</label>
 						<input type="text" id="nombreU" name="nombreU" class="form-control" aria-describedby="nombreHelp">
@@ -158,27 +159,25 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		//botón Insertar 
 		$('#btnInsertar').click(function(){
+			
 			datos=$('#registroForm').serialize();
 
 			$.ajax({
 				type: "POST",
 				data: datos,
-				//prestar atención a "url"
 				url:  "index.php?page=insertar",
 				success: function(r){
 					$('#registroForm')[0].reset();
 					$('#tablaCliente').load(' #tablaCliente');
-					//alert("Agregado Ok!");
-					// if (r==1) {
-					// } else {
-					// 	alert(r);
-					// }
 				}
 			});
 
 		});
 
+		//botón Editar 
 		$('#btnEditar').click(function(){
 			
 			datos=$('#editarForm').serialize();
@@ -188,17 +187,12 @@
 				data: datos,
 				url:  "index.php?page=editar",
 				success: function(r){
-					//console.log(datos);
 					$('#tablaCliente').load(' #tablaCliente');
-					// if (r==1) {
-					// 	alert("Editado Ok!");
-					// } else {
-					// 	alert("Fallo al editar");
-					// }
 				}
 			});
 		});
 
+		//botón Eliminar 
 		$('#btnEliminar').click(function(){
 
 			datos=$('#eliminarForm').serialize();
@@ -208,53 +202,40 @@
 				data: datos,
 				url:  "index.php?page=eliminar",
 				success: function(r){
-					//console.log(datos);
 					$('#tablaCliente').load(' #tablaCliente');
 				}
 			});
 		});
 		
+		//carga de tabla
 		$('#tablaCliente').load(' #tablaCliente');
 
 	});
 
-	function cargarFormEditar(id){
-		//alert(id);
+	function cargarFormUpdate(id){
 		$.ajax({
 			method: "POST",
 			data: "id=" + id,
-			url: "views/paginas/cargar.php",
+			url:  "index.php?page=cargar",
 			success: function(r){
 				//console.log(r);
-				//if (r==1) {
-				//alert("Funciona hasta aqui");
 				datos=jQuery.parseJSON(r);
-				$('#id').val(datos['id']);
+				$('#idU').val(datos['id']);
 				$('#nombreU').val(datos['nombre']);
 				$('#emailU').val(datos['email']);
-				//} else {
-				//alert("Fallo al editar");
-				//}
 			}
 		});
 	}
 
-	function cargarFormEliminar(id){
-		//alert(id);
+	function cargarFormDelete(id){
 		$.ajax({
 			method: "POST",
 			data: "id=" + id,
-			url: "views/paginas/cargar.php",
+			url:  "index.php?page=cargar",
 			success: function(r){
-				//console.log(r);
-				//if (r==1) {
-				//alert("Funciona hasta aqui");
 				datos=jQuery.parseJSON(r);
 				$('#idD').val(datos['id']);
 				$('#nombreD').val(datos['nombre']);
-				//} else {
-				//alert("Fallo al editar");
-				//}
 			}
 		});
 	}
