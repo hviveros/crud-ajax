@@ -17,24 +17,15 @@ class ClienteController {
 	}
 
 	public function insertar() {
-        require_once('./views/includes/cabecera.php');
-        require_once('./views/includes/navbar.php');
         require_once('./views/paginas/insertar.php');
-        require_once('./views/includes/pie.php');
 	}
 
 	public function editar() {
-        require_once('./views/includes/cabecera.php');
-        require_once('./views/includes/navbar.php');
         require_once('./views/paginas/editar.php');
-        require_once('./views/includes/pie.php');
 	}
 
 	public function eliminar() {
-        require_once('./views/includes/cabecera.php');
-        require_once('./views/includes/navbar.php');
         require_once('./views/paginas/eliminar.php');
-        require_once('./views/includes/pie.php');
 	}
 
 	public function insertarCliente($datos) {
