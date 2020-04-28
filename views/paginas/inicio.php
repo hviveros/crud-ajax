@@ -76,6 +76,7 @@
 			</div>
 			<form method="POST" name="registroForm" id="registroForm" class="text-left">
 				<div class="modal-body">
+					<div id="mensajeInsertar"></div>
 					<div class="form-group">
 						<label for="nombreU">Nombre</label>
 						<input type="text" id="nombre" name="nombre" class="form-control" aria-describedby="nombreHelp">
@@ -170,8 +171,15 @@
 				data: datos,
 				url:  "index.php?page=insertar",
 				success: function(r){
-					$('#registroForm')[0].reset();
-					$('#tablaCliente').load(' #tablaCliente');
+					//console.log(r);
+					respuesta=jQuery.parseJSON(r);
+					if (respuesta['codigo'] == 0) {
+						$('#mensajeInsertar').html('<div class="alert alert-danger text-center" role="alert">'+respuesta['mensaje']+'</div>');
+					} else{
+						$('#mensajeInsertar').html('<div class="alert alert-success text-center" role="alert">'+respuesta['mensaje']+'</div>');
+						$('#registroForm')[0].reset();
+						$('#tablaCliente').load(' #tablaCliente');
+					}
 				}
 			});
 
