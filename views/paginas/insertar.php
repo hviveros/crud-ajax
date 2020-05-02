@@ -5,22 +5,24 @@
 	$objeto = new ClienteController();
 
 	$datos = array(
-		'nombre'   => $_POST['nombre'], //htmlentities y toda la seguridad
+		'nombre'   => $_POST['nombre'], //htmlentities, limites caracteres y toda la seguridad...
 		'email'    => $_POST['email'],
 	);
 
-	//metodo obtenerClientes() si email coincide, respuesta[codigo] = 0
-
-	if ($datos['nombre'] == 'Arya Stark') {
-		$respuesta['mensaje'] = "Registro ya existente";
-		$respuesta['codigo'] = 0;
+	
+	//validaciones: campo vacio, tipo de dato, comparacion con otros campos del formulario...
+	if (empty($datos['nombre'])) {
+		$respuesta['mensaje'] = "No puede insertar con campos vacíos";
+		$respuesta['codigo'] = 400;
+		echo json_encode($respuesta);
+	} else if (is_numeric($datos['nombre'])) {
+		$respuesta['mensaje'] = "No puede ingresar números";
+		$respuesta['codigo'] = 400;
 		echo json_encode($respuesta);
 	} else {
-		$respuesta['mensaje'] = "Registro insertado";
-		$respuesta['codigo'] = 1;
-		//aqui debe ir el array completamente depurado, verificado
+		//aqui debe ir el array completamente depurado, validado
+		//sin caracteres raros, campos numericos o emails validados, longitud correcta etc...
 		$objeto->insertarCliente($datos);
-		echo json_encode($respuesta);
 	}
 
 

@@ -9,7 +9,7 @@
 	<main role="main" class="container">
 
 		<div class="starter-template">
-			<h1>CRUD sencillo con PHP + AJAX</h1>
+			<h1>CRUD MVC con PHP + AJAX</h1>
 			<div class="row">
 				<div class="col-md-6 offset-3">
 					<?php
@@ -173,7 +173,7 @@
 				success: function(r){
 					//console.log(r);
 					respuesta=jQuery.parseJSON(r);
-					if (respuesta['codigo'] == 0) {
+					if (respuesta['codigo'] == 400) {
 						$('#mensajeInsertar').html('<div class="alert alert-danger text-center" role="alert">'+respuesta['mensaje']+'</div>');
 					} else{
 						$('#mensajeInsertar').html('<div class="alert alert-success text-center" role="alert">'+respuesta['mensaje']+'</div>');

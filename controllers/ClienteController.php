@@ -30,24 +30,43 @@ class ClienteController {
 
 	public function insertarCliente($datos) {
 
-		$cliente = new ClienteModel();
-		$cliente->insertarCliente($datos);
-		// header('Location: index.php?page=inicio&mensaje=Registro Exitoso');
+		//si es necesario, se compara el registro recibido
+		//con los registros de la BD		
+		$compararClientes = new ClienteModel();
+		$compararClientes = $this->obtenerClientes();
+
+		$error = 0;
+
+		foreach ($compararClientes as $r) {
+			//se compara el campo 'email' con todos los registros de la BD
+			//si hay otro campo para comparar, ir adhiriendo "if"
+		    if ($datos['email'] == $r['email']) {
+				$error++;
+				$respuesta['mensaje'] = "email ya registrado";
+				$respuesta['codigo'] = 400;
+	    		echo json_encode($respuesta, JSON_PRETTY_PRINT);
+				die();
+			}
+	    }
+		//si 'error' es 0, $datos cumple con todo
+		//se procederá a Insertar a la BD
+	    if ($error == 0) {
+	    	$cliente = new ClienteModel();
+			$cliente->insertarCliente($datos);
+	    	$respuesta['mensaje'] = "Registro insertado correctamente";
+			$respuesta['codigo'] = 200;
+	    	echo json_encode($respuesta, JSON_PRETTY_PRINT);
+	    }
 	}
 
 	public function editarCliente($id, $datos) {
-
 		$cliente = new ClienteModel();		
 		$cliente->editarCliente($id, $datos);
-
-		//header('Location: index.php?page=inicio&mensaje=Guardado con Éxito');
 	}
 
 	public function eliminarCliente($id) {
 		$cliente = new ClienteModel();
 		$cliente->eliminarCliente($id);
-
-		//header('Location: index.php?page=inicio&mensaje=Registro Eliminado');
 	}
 
 	public function obtenerClientes() {
